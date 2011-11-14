@@ -6,10 +6,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import br.usp.ia.controller.CalculusController;
+import br.usp.ia.controller.ID3Utils;
 
 public class TestEntropy {
-	private CalculusController cc = new CalculusController();
+	private ID3Utils cc = new ID3Utils();
 	
 	@Test
 	public void testNoveCinco(){
