@@ -24,4 +24,24 @@ public class TestEntropy {
 		Assert.assertEquals(df.format(result), "0,971");
 	}
 	
+	@Test
+	public void testeQuatroZero(){
+		double result = cc.entropy(4, 0);
+		DecimalFormat df = new DecimalFormat("0.000");  
+		Assert.assertEquals(df.format(result), "0,000");
+	}
+	
+	@Test
+	public void testeTresDois(){
+		double result = cc.entropy(3, 2);
+		DecimalFormat df = new DecimalFormat("0.000");  
+		Assert.assertEquals(df.format(result), "0,971");
+	}	
+	
+	@Test
+	public void testeTresUm(){
+		double result = cc.entropy(3, 1);
+		DecimalFormat df = new DecimalFormat("0.000");  
+		Assert.assertEquals(df.format(result), "0,811");
+	}	
 }
