@@ -6,15 +6,24 @@ import java.util.List;
 public class Node {
 	private String nome;
 	private List<Node> nodes;
-	public Node(String nome, List<Node> nodes) {
-		super();
-		this.nome = nome;
+	private double entropy;
+	public Node() {
 		this.nodes = new ArrayList<Node>();
+		setEntropy(0);
 	}
 	public String getNome() {
 		return nome;
 	}
 	public List<Node> getNodes() {
 		return nodes;
+	}
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
+	}
+	public double getEntropy() {
+		return entropy;
+	}
+	public void setEntropy(double entropy) {
+		this.entropy = entropy;
 	}
 }

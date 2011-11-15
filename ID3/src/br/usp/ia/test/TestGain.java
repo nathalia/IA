@@ -8,18 +8,18 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.usp.ia.controller.ID3Utils;
-import br.usp.ia.model.Valor;
+import br.usp.ia.model.Value;
 
 public class TestGain {
 	private ID3Utils cc = new ID3Utils();
 	
 	@Test
 	public void testGanhoAparencia(){
-		List<Valor> valores = new ArrayList<Valor>();
+		List<Value> valores = new ArrayList<Value>();
 		//Aparência
-		Valor valor1 = new Valor("Ensolarado", 2, 3);
-		Valor valor2 = new Valor("Nublado", 4, 0);
-		Valor valor3 = new Valor("Chuva", 3, 2);
+		Value valor1 = new Value("Ensolarado", 2, 3);
+		Value valor2 = new Value("Nublado", 4, 0);
+		Value valor3 = new Value("Chuva", 3, 2);
 		
 		valores.add(valor1);
 		valores.add(valor2);
@@ -34,11 +34,11 @@ public class TestGain {
 	
 	@Test
 	public void testGanhoTemperatura(){
-		List<Valor> valores = new ArrayList<Valor>();
+		List<Value> valores = new ArrayList<Value>();
 		//Aparência
-		Valor valor1 = new Valor("Quente", 2, 2);
-		Valor valor2 = new Valor("Moderada", 4, 2);
-		Valor valor3 = new Valor("Fria", 3, 1);
+		Value valor1 = new Value("Quente", 2, 2);
+		Value valor2 = new Value("Moderada", 4, 2);
+		Value valor3 = new Value("Fria", 3, 1);
 		
 		valores.add(valor1);
 		valores.add(valor2);
@@ -53,10 +53,10 @@ public class TestGain {
 	
 	@Test
 	public void testGanhoUmidade(){
-		List<Valor> valores = new ArrayList<Valor>();
+		List<Value> valores = new ArrayList<Value>();
 		//Aparência
-		Valor valor1 = new Valor("Alta", 4, 3);
-		Valor valor2 = new Valor("Normal", 6, 1);
+		Value valor1 = new Value("Alta", 4, 3);
+		Value valor2 = new Value("Normal", 6, 1);
 		
 		valores.add(valor1);
 		valores.add(valor2);
