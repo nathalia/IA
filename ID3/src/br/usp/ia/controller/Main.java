@@ -11,7 +11,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		ArrayList<Entry> LearningSet = FileReader.readFile();
-
+		double initial = ID3Utils.entropy(9, 5);
 		ArrayList<Value> entropies = new ArrayList<Value>();
 		Value sunny;
 		Value rain;
@@ -67,7 +67,7 @@ public class Main {
 		overcast = new Value("overcast", negative3, positive3);
 		entropies.add(overcast);
 
-		Double gainOverlook = ID3Utils.gain(1, entropies, 14);
+		Double gainOverlook = ID3Utils.gain(initial, entropies, 14);
 		System.out.println(gainOverlook);
 		
 		
@@ -126,7 +126,7 @@ public class Main {
 		hot = new Value("hot", negative3, positive3);
 		entropies.add(hot);
 
-		Double gainTemperature = ID3Utils.gain(1, entropies, 14);
+		Double gainTemperature = ID3Utils.gain(initial, entropies, 14);
 		System.out.println(gainTemperature);
 		
 		entropies.clear();
@@ -171,7 +171,7 @@ public class Main {
 		entropies.add(high);
 
 
-		Double gainHumidity = ID3Utils.gain(1, entropies, 14);
+		Double gainHumidity = ID3Utils.gain(initial, entropies, 14);
 		System.out.println(gainHumidity);
 		
 		entropies.clear();
@@ -216,7 +216,7 @@ public class Main {
 		entropies.add(strong);
 
 
-		Double gainWind = ID3Utils.gain(1, entropies, 14);
+		Double gainWind = ID3Utils.gain(initial, entropies, 14);
 		System.out.println(gainWind);
 		
 		
