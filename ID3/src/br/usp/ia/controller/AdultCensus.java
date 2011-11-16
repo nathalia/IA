@@ -3,23 +3,29 @@ package br.usp.ia.controller;
 import java.util.ArrayList;
 
 import br.usp.ia.model.Attribute;
+import br.usp.ia.model.ComparableEntry;
 import br.usp.ia.model.Entry;
 import br.usp.ia.model.Node;
 import br.usp.ia.model.Value;
 import br.usp.ia.model.ValuedAttribute;
 
-public class Main {
+public class AdultCensus {
 
 	public static void main(String[] args) {
 
-		ArrayList<Entry> learningSet = FileReader.readFile();
-		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
-		Value rootValues = ID3Utils.countLabels(learningSet);
-		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
-
-		double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
-
-		buildTree(learningSet, attributesValues, "","raiz");
+//		ArrayList<Entry> learningSet = FileReader.readFile("adult.data");
+//		
+//		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
+//		Value rootValues = ID3Utils.countLabelsAC(learningSet);
+//		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
+//		
+//		double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
+//		
+//		buildTree(learningSet, attributesValues, "","raiz");
+		
+		ArrayList<ComparableEntry> learningSet = FileReader.readTestFile("adultzim.data");
+		
+System.out.println(ID3Utils.discretizer(learningSet));
 
 
 	}
@@ -27,7 +33,7 @@ public class Main {
 	public static void buildTree(ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues,
 			String pai, String aresta){
 		if(learningSet.size() == 0 || attributesValues.size()==0) return;
-		Value rootValues = ID3Utils.countLabels(learningSet);
+		Value rootValues = ID3Utils.countLabelsAC(learningSet);
 		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
 
 		double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
@@ -36,7 +42,7 @@ public class Main {
 		int j = -1;
 		double max = 0.0;
 		for(int k = 0; k<gains.length; k++){
-			gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(i), i);
+			gains[k] = ID3Utils.countAttributeAC(initial, learningSet, attributesValues.get(i), i);
 			if(gains[k]>=max){
 				max = gains[k];
 				j++;
@@ -57,7 +63,7 @@ public class Main {
 			j = -1;
 			max = 0.0;
 			for(int k = 0; k<gains.length; k++){
-				gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(i), i);
+				gains[k] = ID3Utils.countAttributeAC(initial, learningSet, attributesValues.get(i), i);
 				if(gains[k]>=max){
 					max = gains[k];
 					j++;
