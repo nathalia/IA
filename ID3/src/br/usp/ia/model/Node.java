@@ -5,7 +5,15 @@ import java.util.List;
 
 public class Node {
 	private String name;
+	private List<String> arestas = new ArrayList<String>();
 	private List<Node> nodes;
+	
+	public List<String> getArestas() {
+		return arestas;
+	}
+	public void setArestas(List<String> arestas) {
+		this.arestas = arestas;
+	}
 	public Node() {
 		this.nodes = new ArrayList<Node>();
 	}

@@ -144,10 +144,10 @@ public class ID3Utils {
 			for (Entry entry : learningSet) {
 				ArrayList<ValuedAttribute> attributes = entry.getAttributes();
 				if(attributes.get(attrIndex).getValue().equals(possibleValue) && 
-						attributes.get(attributes.size()-1).getValue().equals("<=50K"))
+						attributes.get(attributes.size()-1).getValue().equals(">50K"))
 					positive[i]++;
 				else if(attributes.get(attrIndex).getValue().equals(possibleValue) && 
-						attributes.get(attributes.size()-1).getValue().equals(">50K"))
+						attributes.get(attributes.size()-1).getValue().equals("<=50K"))
 					negative[i]++;
 			}
 
@@ -162,7 +162,7 @@ public class ID3Utils {
 		int positive = 0;
 		int negative = 0;
 		for(int i = 0; i<comps.size(); i++){
-			if(comps.get(i).getLabel().equals(">50K"))
+			if(comps.get(i).getLabel().equals("<=50K"))
 				negative++;
 			else
 				positive++;
@@ -195,7 +195,7 @@ public class ID3Utils {
 		int positive = 0;
 		int negative = 0;
 		for(int i = 0; i<sub1.size(); i++){
-			if(sub1.get(i).getLabel().equals(">50K"))
+			if(sub1.get(i).getLabel().equals("<=50K"))
 				negative++;
 			else
 				positive++;
