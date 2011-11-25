@@ -1,16 +1,15 @@
 package br.usp.ia.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.management.AttributeValueExp;
-
 import br.usp.ia.model.Attribute;
 import br.usp.ia.model.ComparableEntry;
-import br.usp.ia.model.ValuedAttribute;
 import br.usp.ia.model.Entry;
 import br.usp.ia.model.Value;
+import br.usp.ia.model.ValuedAttribute;
 
 public class ID3Utils {
 
@@ -202,4 +201,23 @@ public class ID3Utils {
 		}
 		return new Value("vT", positive, negative);
 	}
+	//recebe um arrayList de entradas e o divide em n/10 folds
+	public static List<List<Entry>> foldCrossValidation(List<Entry> entradas){
+		Collections.shuffle(entradas);
+		List<List<Entry>> result = new ArrayList<List<Entry>>();
+		List<Entry> aux = new ArrayList<Entry>();
+		for (Entry entry : entradas) {
+			if(aux.size()%10 == 0 && aux.size()>0){
+				result.add(aux);
+				aux = new ArrayList<Entry>();
+			}
+			else{
+				aux.add(entry);
+			}
+		}
+		if (aux.size()>0)
+			result.add(aux);
+		return result;
+	}
 }
+

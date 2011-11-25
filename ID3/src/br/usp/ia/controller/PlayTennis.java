@@ -15,6 +15,8 @@ public class PlayTennis {
 		ArrayList<Entry> learningSet = FileReader.readFile("playtennis.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
 		
+		//particionar
+		
 		Node root = new Node();
 		buildTree(learningSet, attributesValues, root, "", "");
 		Entry e = new Entry();
