@@ -1,6 +1,7 @@
 package br.usp.ia.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.usp.ia.model.Attribute;
 import br.usp.ia.model.Entry;
@@ -16,9 +17,13 @@ public class PlayTennis {
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
 		
 		//particionar
+		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
 		
-		Node root = new Node();
-		buildTree(learningSet, attributesValues, root, "", "");
+		//contruir árvore com r-1 folds
+		for (List<Entry> list : listLearningSet) {
+			Node root = new Node();
+			buildTree(learningSet, attributesValues, root, "", "");			
+		}
 		Entry e = new Entry();
 		ArrayList<ValuedAttribute> attribs = new ArrayList<ValuedAttribute>();
 		ValuedAttribute at1 = new ValuedAttribute("outlook", "sunny");
@@ -34,7 +39,7 @@ public class PlayTennis {
 
 
 		e.setAttributes(attribs);
-		System.out.println(ID3Inference.analysis(root.getNodes().get(0), e));
+		//System.out.println(ID3Inference.analysis(root.getNodes().get(0), e));
 	}
 
 	public static void buildTree(ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues,
