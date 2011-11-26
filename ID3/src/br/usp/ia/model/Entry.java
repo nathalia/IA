@@ -12,4 +12,8 @@ public class Entry {
 	public void setAttributes(ArrayList<ValuedAttribute> attributes) {
 		this.attributes = attributes;
 	}
+	
+	public void removeAttribute(int i){
+		this.attributes.remove(i);
+	}
 }

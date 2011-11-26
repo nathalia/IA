@@ -17,11 +17,16 @@ public class ID3Inference {
 			for (String aresta : root.getArestas()) {
 				if(root.getName().equals(valuedAttribute.getName()) &&
 						valuedAttribute.getValue().equals(aresta)){
+					System.out.println(root.getNodes().get(i).getName());
+					e.removeAttribute(i);
 					return analysis(root.getNodes().get(i), e);
 				}
 				i++;
 			}
 		}
+		
+		if(root.getNodes().get(root.getNodes().size()-1).getName().equals(e.getAttributes().get(e.getAttributes().size()-1).getValue()))
+			return 1;
 		return 0;
 	}
 

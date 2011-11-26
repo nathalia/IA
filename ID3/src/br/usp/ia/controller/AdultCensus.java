@@ -45,19 +45,24 @@ public class AdultCensus {
 		buildTree(learningSet, attributesValues, root, "", "");
 		Entry e = new Entry();
 		ArrayList<ValuedAttribute> attribs = new ArrayList<ValuedAttribute>();
-		ValuedAttribute at1 = new ValuedAttribute("education-num", "high4");
-		ValuedAttribute at2 = new ValuedAttribute("marital-status", "Never-married");
-		ValuedAttribute at3 = new ValuedAttribute("fnlwgt", "low2");
-		ValuedAttribute at4 = new ValuedAttribute("education", "Bachelors");
-		ValuedAttribute at5 = new ValuedAttribute("race", "White");
-		ValuedAttribute at6 = new ValuedAttribute("relationship", "Not-in-family");
-		ValuedAttribute at7 = new ValuedAttribute("occupation", "Adm-clerical");
-		ValuedAttribute at8 = new ValuedAttribute("sex", "Male");
-		ValuedAttribute at9 = new ValuedAttribute("capital-gain", "low10");
-		ValuedAttribute at10 = new ValuedAttribute("capital-loss", "low11");
-		ValuedAttribute at11 = new ValuedAttribute("hours-per-week", "high12");
-		ValuedAttribute at12 = new ValuedAttribute("workclass", "State-gov");
-		ValuedAttribute at13 = new ValuedAttribute("decision", "<=50K");
+		ValuedAttribute at0 = new ValuedAttribute("age", "high0");
+		ValuedAttribute at1 = new ValuedAttribute("workclass", "State-gov");
+		ValuedAttribute at2 = new ValuedAttribute("fnlwgt", "low2");
+		ValuedAttribute at3 = new ValuedAttribute("education", "Bachelors");
+		ValuedAttribute at4 = new ValuedAttribute("education-num", "high4");
+		ValuedAttribute at5 = new ValuedAttribute("marital-status", "Never-married");
+		ValuedAttribute at6 = new ValuedAttribute("occupation", "Adm-clerical");
+		ValuedAttribute at7 = new ValuedAttribute("relationship", "Not-in-family");
+		ValuedAttribute at8 = new ValuedAttribute("race", "White");
+		ValuedAttribute at9 = new ValuedAttribute("sex", "Male");
+		ValuedAttribute at10 = new ValuedAttribute("capital-gain", "low10");
+		ValuedAttribute at11 = new ValuedAttribute("capital-loss", "low11");
+		ValuedAttribute at12 = new ValuedAttribute("hours-per-week", "high12");
+		ValuedAttribute at13 = new ValuedAttribute("native-country", "Jamaica");
+		ValuedAttribute at14 = new ValuedAttribute("decision", ">50K");
+		
+
+		attribs.add(at0);
 		attribs.add(at1);
 		attribs.add(at2);
 		attribs.add(at3);
@@ -71,8 +76,10 @@ public class AdultCensus {
 		attribs.add(at11);
 		attribs.add(at12);
 		attribs.add(at13);
+		attribs.add(at14);
 
 		e.setAttributes(attribs);
+		System.out.println("-------------------------------------");
 		System.out.println(ID3Inference.analysis(root.getNodes().get(0), e));
 		System.out.println(countNodes);
 
@@ -110,7 +117,6 @@ public class AdultCensus {
 		if(j<0)return;
 		System.out.println(pai.getName() + "-[ "+ aresta + " ]-" +attributesValues.get(j).getName());
 		Node node = new Node();
-		countNodes++;
 		if(difzero!=0){
 		pai.getArestas().add(aresta);
 		pai.setName(nomePai);
