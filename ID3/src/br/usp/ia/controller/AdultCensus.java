@@ -10,7 +10,7 @@ import br.usp.ia.model.Value;
 import br.usp.ia.model.ValuedAttribute;
 
 public class AdultCensus {
-
+	static int countNodes = 0;
 	public static void main(String[] args) {
 
 //		String nonMissing = FileReader.removeMissingValues("adult.data");
@@ -55,9 +55,9 @@ public class AdultCensus {
 		ValuedAttribute at8 = new ValuedAttribute("sex", "Male");
 		ValuedAttribute at9 = new ValuedAttribute("capital-gain", "low10");
 		ValuedAttribute at10 = new ValuedAttribute("capital-loss", "low11");
-		ValuedAttribute at11 = new ValuedAttribute("hours-per-week", "low12");
+		ValuedAttribute at11 = new ValuedAttribute("hours-per-week", "high12");
 		ValuedAttribute at12 = new ValuedAttribute("workclass", "State-gov");
-		ValuedAttribute at13 = new ValuedAttribute("decision", ">50K");
+		ValuedAttribute at13 = new ValuedAttribute("decision", "<=50K");
 		attribs.add(at1);
 		attribs.add(at2);
 		attribs.add(at3);
@@ -74,7 +74,7 @@ public class AdultCensus {
 
 		e.setAttributes(attribs);
 		System.out.println(ID3Inference.analysis(root.getNodes().get(0), e));
-
+		System.out.println(countNodes);
 
 	}
 	
@@ -110,6 +110,7 @@ public class AdultCensus {
 		if(j<0)return;
 		System.out.println(pai.getName() + "-[ "+ aresta + " ]-" +attributesValues.get(j).getName());
 		Node node = new Node();
+		countNodes++;
 		if(difzero!=0){
 		pai.getArestas().add(aresta);
 		pai.setName(nomePai);
