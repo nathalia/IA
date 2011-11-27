@@ -17,7 +17,6 @@ public class ID3Inference {
 			for (String aresta : root.getArestas()) {
 				if(root.getName().equalsIgnoreCase(valuedAttribute.getName()) &&
 						valuedAttribute.getValue().equals(aresta)){
-					System.out.println(valuedAttribute.getValue());
 					return analysis(root.getNodes().get(i), e);
 				}
 				i++;

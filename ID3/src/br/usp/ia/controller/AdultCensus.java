@@ -10,6 +10,7 @@ import br.usp.ia.model.Value;
 import br.usp.ia.model.ValuedAttribute;
 
 public class AdultCensus {
+	static int countNodes = 0;
 	public static void main(String[] args) {
 
 		//		String nonMissing = FileReader.removeMissingValues("adult.data");
@@ -41,41 +42,47 @@ public class AdultCensus {
 		ArrayList<Entry> learningSet = FileReader.readFile("discretized12.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();		
 		Node root = new Node();
-		root = buildTree(learningSet, attributesValues);
+		root = buildTree("",learningSet, attributesValues);
 		Entry e = new Entry();
 		e = FileReader.testTree("discretized12Test.data");
-		for (ValuedAttribute attribute : e.getAttributes()) {
-			System.out.println(attribute.getName() + " e " + attribute.getValue());
-		}
-		System.out.println("-------------------------------------");
 		System.out.println(ID3Inference.analysis(root, e));
+		System.out.println(countNodes);
 
 	}
 
-	public static Node buildTree(ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues){
+	public static Node buildTree(String pre, ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues){
 		Value rootValues = ID3Utils.countLabelsAC(learningSet);
 
 		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
 		Node root = new Node();
+		countNodes++;
 		Value v = ID3Utils.countLabelsAC(learningSet);
 		if(v.getNegative()==0){
 			root.setArestas(new ArrayList<String>());
 			root.setNodes(new ArrayList<Node>());
 			root.setName(">50K");
+			System.out.println(pre + "decide"+ root.getName());
+			countNodes--;
 		}else if (v.getPositive()==0){
 			root.setArestas(new ArrayList<String>());
 			root.setNodes(new ArrayList<Node>());
 			root.setName("<=50K");
+			System.out.println(pre + "decide"+ root.getName());
+			countNodes--;
 		}else if((attributesValues.size()==1)) {
 			Value vF = ID3Utils.countLabelsAC(learningSet);
 			if(vF.getNegative()<vF.getPositive()){
 				Node decision = new Node();
 				decision.setName(">50K");
+				System.out.println(pre + "decide"+ decision.getName());
+				countNodes--;
 				root.getNodes().add(decision);
 				return root;
 			}else{
 				Node decision = new Node();
 				decision.setName("<=50K");
+				System.out.println(pre + "decide"+ decision.getName());
+				countNodes--;
 				root.getNodes().add(decision);
 				return root;
 			}
@@ -98,6 +105,7 @@ public class AdultCensus {
 			}
 			root.setName(attributesValues.get(j).getName());
 
+			int n = 0;
 			for (String possibleValue : attributesValues.get(j).getPossibleValues()) {
 				Value vP = ID3Utils.countLabelsAC(learningSet);
 				root.getArestas().add(possibleValue);
@@ -108,16 +116,23 @@ public class AdultCensus {
 					if(vP.getNegative()<vP.getPositive()){
 						Node decision = new Node();
 						decision.setName(">50K");
+						System.out.println(pre + "decide"+ decision.getName());
+						countNodes--;
 						root.getNodes().add(decision);
 					}else{
 						Node decision = new Node();
 						decision.setName("<=50k");
+						System.out.println(pre + "decide"+ decision.getName());
+						countNodes--;
 						root.getNodes().add(decision);
 					}
+					break;
 				}
 				else{
-					root.getNodes().add(buildTree(newSet, newAttributesValues));
+					System.out.println(pre + root.getName() + " atraves de " + root.getArestas().get(n));
+					root.getNodes().add(buildTree(pre+" ",newSet, newAttributesValues));
 				}
+				n++;
 			}
 		}
 		return root;
