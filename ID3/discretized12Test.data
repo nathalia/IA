@@ -1,0 +1,2 @@
+age,workclass,fnlwgt,education,education-num,marital-status,occupation,relationship,race,sex,capital-gain,capital-loss,hours-per-week,native-country,decision
+low0,State-gov,low2,Bachelors,high4,Never-married,Adm-clerical,Not-in-family,White,Male,low10,low11,high12,Cuba,<=50K

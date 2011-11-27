@@ -225,4 +225,64 @@ public class FileReader {
 		}
 		return outputName;
 	}
+	
+	
+	public static Entry testTree(String filename){
+		File file = new File(filename);
+		Entry entry = null;
+		if(file.exists()){
+			try {
+				entry= new Entry();
+		String lin;
+				InputStream input;	
+				input = new BufferedInputStream(new FileInputStream(file));
+				Reader readerInput = new InputStreamReader(input);
+				BufferedReader brInput = new BufferedReader(readerInput);
+
+				lin = brInput.readLine();
+
+				
+				String[] attrNames = lin.split(",");
+
+				lin = brInput.readLine();
+
+				
+				ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+
+				for(int i = 0; i<attrNames.length; i++)
+					attributes.add(new Attribute(attrNames[i]));
+
+
+					Entry e = new Entry();
+					String[] values = lin.split(",");
+
+					for(int i = 0; i< values.length; i++){
+						values[i] = values[i].trim();
+						if(!attributes.get(i).getPossibleValues().contains(values[i]))
+							attributes.get(i).add(values[i]);
+					}
+						ArrayList<ValuedAttribute> valuedAttributes = new ArrayList<ValuedAttribute>();
+
+						for(int i = 0; i<values.length; i++){
+							valuedAttributes.add(new ValuedAttribute(attrNames[i], values[i]));
+						}
+						e.setAttributes(valuedAttributes);
+						entry = e;
+
+				attributesValues = new ArrayList<Attribute>();
+				for(int i = 0; i< attributes.size(); i++){
+					attributesValues.add(attributes.get(i));
+				}
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+		}else{
+			System.out.println("File not found.");
+		}
+
+		return entry;
+	}
 }

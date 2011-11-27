@@ -10,103 +10,98 @@ import br.usp.ia.model.Value;
 import br.usp.ia.model.ValuedAttribute;
 
 public class PlayTennis {
-
 	public static void main(String[] args) {
 
 		ArrayList<Entry> learningSet = FileReader.readFile("playtennis.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
-		
+
 		//particionar
-		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
-		
+		//List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
+
 		//contruir árvore com r-1 folds
-		for (List<Entry> list : listLearningSet) {
-			Node root = new Node();
-			buildTree(learningSet, attributesValues, root, "", "");			
-		}
+		Node root = new Node();
+		root = buildTree(learningSet, attributesValues);			
 		Entry e = new Entry();
-		ArrayList<ValuedAttribute> attribs = new ArrayList<ValuedAttribute>();
-		ValuedAttribute at1 = new ValuedAttribute("outlook", "sunny");
-		ValuedAttribute at2 = new ValuedAttribute("humidity", "high");
-		ValuedAttribute at3 = new ValuedAttribute("temperature", "hot");
-		ValuedAttribute at4 = new ValuedAttribute("wind", "strong");
-		ValuedAttribute at5 = new ValuedAttribute("decision", "no");
-		attribs.add(at1);
-		attribs.add(at2);
-		attribs.add(at3);
-		attribs.add(at4);
-		attribs.add(at5);
 
 
-		e.setAttributes(attribs);
-		//System.out.println(ID3Inference.analysis(root.getNodes().get(0), e));
+		e = FileReader.testTree("playtennisTest.data");
+		for (ValuedAttribute attribute : e.getAttributes()) {
+			System.out.println(attribute.getName() + " e " + attribute.getValue());
+		}
+		System.out.println(ID3Inference.analysis(root, e));
 	}
 
-	public static void buildTree(ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues,
-			Node pai, String nomePai, String aresta){
-		if(learningSet.size() == 0 || attributesValues.size()==0) return;
+
+	public static Node buildTree(ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues){
 		Value rootValues = ID3Utils.countLabels(learningSet);
+
 		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
-
-		double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
-
-		int i = 0;
-		int j = -1;
-		double max = 0.0;
-		for(int k = 0; k<gains.length; k++){
-			gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(i), i);
-			if(gains[k]>=max){
-				max = gains[k];
-				j++;
+		Node root = new Node();
+		Value v = ID3Utils.countLabels(learningSet);
+		if(v.getNegative()==0){
+			root.setArestas(new ArrayList<String>());
+			root.setNodes(new ArrayList<Node>());
+			root.setName("yes");
+		}else if (v.getPositive()==0){
+			root.setArestas(new ArrayList<String>());
+			root.setNodes(new ArrayList<Node>());
+			root.setName("no");
+		}else if((attributesValues.size()==1)) {
+			Value vF = ID3Utils.countLabels(learningSet);
+			if(vF.getNegative()<vF.getPositive()){
+				Node decision = new Node();
+				decision.setName("yes");
+				root.getNodes().add(decision);
+				return root;
+			}else{
+				Node decision = new Node();
+				decision.setName("no");
+				root.getNodes().add(decision);
+				return root;
 			}
-			i++;	
 		}
 
-		int difzero=0;
-		for(int k = 0; k<gains.length; k++){
-			if(gains[k]!=0.0)
-				difzero++;
-		}
-		if(difzero==0){
-			j = learningSet.get(0).getAttributes().size()-1;
-		}
+		else{
 
-		if(j<0)return;
-		System.out.println(pai.getName() + "-[ "+ aresta + " ]-" +attributesValues.get(j).getName());
-		Node node = new Node();
-		if(difzero!=0){
-		pai.getArestas().add(aresta);
-		pai.setName(nomePai);
-		node.setName(attributesValues.get(j).getName());
-		pai.getNodes().add(node);
-		}
-		for (String possibleValue : attributesValues.get(j).getPossibleValues()) {
-			if(difzero!=0){
+			double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
+			if(attributesValues.size()==0) return null;
+			int i = 0;
+			int j = 0;
+			double max = 0.0;
+			for(int k = 0; k<gains.length-1; k++){
+				gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(i), i);
+				if(gains[k]>=max){
+					max = gains[k];
+					j = k;
+				}
+				i++;	
+			}
+			root.setName(attributesValues.get(j).getName());
+
+			for (String possibleValue : attributesValues.get(j).getPossibleValues()) {
+				Value vP = ID3Utils.countLabels(learningSet);
+				root.getArestas().add(possibleValue);
 				ArrayList<Entry> newSet = ID3Utils.partialSet(learningSet, j, possibleValue);
 				ArrayList<Attribute> newAttributesValues = ID3Utils.partialAttributes(attributesValues, j);
-				buildTree(newSet, newAttributesValues, node, node.getName(),
-						possibleValue);
-			}else{
-				Value v = ID3Utils.countLabels(learningSet);
-				if(v.getNegative()<v.getPositive()){
-					pai.getArestas().add(aresta);
-					Node decision = new Node();
-					decision.setName("yes");
-					pai.getNodes().add(decision);
-					System.out.println(attributesValues.get(j).getName() + "->> "+ "yes" );
-				}else{
-					pai.getArestas().add(aresta);
-					Node decision = new Node();
-					decision.setName("no");
-					pai.getNodes().add(decision);
-					System.out.println(attributesValues.get(j).getName() + "->> "+ "no" );
+
+				if(newSet.size()==0){
+					if(vP.getNegative()<vP.getPositive()){
+						Node decision = new Node();
+						decision.setName("yes");
+						root.getNodes().add(decision);
+					}else{
+						Node decision = new Node();
+						decision.setName("no");
+						root.getNodes().add(decision);
+					}
 				}
-				break;
+				else{
+					root.getNodes().add(buildTree(newSet, newAttributesValues));
+				}
 			}
 		}
+		return root;
 	}
-
-
 }
 
 
