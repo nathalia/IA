@@ -206,10 +206,15 @@ public class ID3Utils {
 		Collections.shuffle(entradas);
 		List<List<Entry>> result = new ArrayList<List<Entry>>();
 		List<Entry> aux = new ArrayList<Entry>();
+		int totalPorFold = entradas.size()/10;
+		if(entradas.size()%10 != 0){
+			totalPorFold++;
+		}
 		for (Entry entry : entradas) {
-			if(aux.size()%10 == 0 && aux.size()>0){
+			if(aux.size()%totalPorFold == 0 && aux.size()>0){
 				result.add(aux);
 				aux = new ArrayList<Entry>();
+				aux.add(entry);
 			}
 			else{
 				aux.add(entry);

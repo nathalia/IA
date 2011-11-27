@@ -43,6 +43,10 @@ public class TestParticao extends TestCase {
 		learningSet.add(e);
 		learningSet.add(e);
 		learningSet.add(e);
+		learningSet.add(e);
+		learningSet.add(e);
+		learningSet.add(e);
+		learningSet.add(e);
 		
 		List<List<Entry>> lista = ID3Utils.foldCrossValidation(learningSet);
 		
