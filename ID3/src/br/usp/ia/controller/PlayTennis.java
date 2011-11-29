@@ -70,7 +70,7 @@ public class PlayTennis {
 		}
 
 		else{
-
+			
 			double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
 			if(attributesValues.size()==0) return null;
 			int i = 0;
@@ -85,14 +85,14 @@ public class PlayTennis {
 				i++;	
 			}
 			root.setName(attributesValues.get(j).getName());
-
+			ArrayList<Entry> newSet = null;
+			ArrayList<Attribute> newAttributesValues = null;
 			int n = 0;
 			for (String possibleValue : attributesValues.get(j).getPossibleValues()) {
 				Value vP = ID3Utils.countLabels(learningSet);
 				root.getArestas().add(possibleValue);
-				ArrayList<Entry> newSet = ID3Utils.partialSet(learningSet, j, possibleValue);
-				ArrayList<Attribute> newAttributesValues = ID3Utils.partialAttributes(attributesValues, j);
-
+				newSet = ID3Utils.partialSet(learningSet, j, possibleValue);
+				newAttributesValues = ID3Utils.partialAttributes(attributesValues, j);
 				if(newSet.size()==0){
 					if(vP.getNegative()<vP.getPositive()){
 						Node decision = new Node();
