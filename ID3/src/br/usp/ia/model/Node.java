@@ -3,7 +3,7 @@ package br.usp.ia.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node {
+public class Node implements Cloneable {
 	private String name;
 	private List<String> arestas = new ArrayList<String>();
 	private List<Node> nodes;

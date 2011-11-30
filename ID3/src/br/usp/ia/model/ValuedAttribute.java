@@ -1,7 +1,7 @@
 package br.usp.ia.model;
 
 
-public class ValuedAttribute {
+public class ValuedAttribute implements Cloneable {
 	private String name;
 	private String value;
 	

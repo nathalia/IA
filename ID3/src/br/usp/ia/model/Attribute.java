@@ -2,7 +2,7 @@ package br.usp.ia.model;
 
 import java.util.ArrayList;
 
-public class Attribute {
+public class Attribute implements Cloneable {
 	private String name;
 	private ArrayList<String> possibleValues = new ArrayList<String>();
 	private int hierarchy = -1;

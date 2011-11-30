@@ -1,6 +1,6 @@
 package br.usp.ia.model;
 
-public class Value {
+public class Value implements Cloneable {
 	private String name;
 	private int positive;
 	private int negative;

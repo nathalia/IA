@@ -205,23 +205,24 @@ public class ID3Utils {
 	public static List<List<Entry>> foldCrossValidation(List<Entry> entradas){
 		Collections.shuffle(entradas);
 		List<List<Entry>> result = new ArrayList<List<Entry>>();
-		List<Entry> aux = new ArrayList<Entry>();
-		int totalPorFold = entradas.size()/10;
-		if(entradas.size()%10 != 0){
-			totalPorFold++;
-		}
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		int index = 0;
 		for (Entry entry : entradas) {
-			if(aux.size()%totalPorFold == 0 && aux.size()>0){
-				result.add(aux);
-				aux = new ArrayList<Entry>();
-				aux.add(entry);
+			if (index % 10 ==0 && index != 0){
+				index = 0;
 			}
-			else{
-				aux.add(entry);
-			}
+			result.get(index).add(entry);
+			index++;
 		}
-		if (aux.size()>0)
-			result.add(aux);
 		return result;
 	}
 	

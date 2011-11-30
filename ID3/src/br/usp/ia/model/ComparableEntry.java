@@ -1,8 +1,6 @@
 package br.usp.ia.model;
 
-import java.util.ArrayList;
-
-public class ComparableEntry implements Comparable {
+public class ComparableEntry implements Comparable, Cloneable {
 	private double value;
 	private String label;
 

@@ -1,6 +1,7 @@
 package br.usp.ia.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.usp.ia.model.Attribute;
@@ -13,20 +14,47 @@ public class PlayTennis {
 	static List<Attribute> usedAttributes = new ArrayList<Attribute>();
 	public static void main(String[] args) {
 
-		ArrayList<Entry> learningSet = FileReader.readFile("testeLucas.data");
+		ArrayList<Entry> learningSet = FileReader.readFile("playtennis.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
-
-		//particionar
-		//List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
-
+		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
 		//contruir árvore com r-1 folds
-		Node root = new Node();
-		root = buildTree("",learningSet, attributesValues, 0);			
-		Entry e = new Entry();
+		//root = buildTree("",learningSet, attributesValues, 0);			
+		//Entry e = new Entry();
 
+		ArrayList<Entry> trainingSet = new ArrayList<Entry>();
+		List<Entry> testingSet = new ArrayList<Entry>();
+		double paramMedia = 0;
+		for(int i = 0; i<10; i++){
 
-		e = FileReader.testTree("playtennisTest.data");
-		System.out.println(ID3Inference.analysis(root, e));
+			for(int j = 0; j<10; j++){
+				if(j!=i)
+					trainingSet.addAll(listLearningSet.get(j));
+				else
+					testingSet = listLearningSet.get(j);
+			}
+			Node root = new Node();
+			root = buildTree("", trainingSet, attributesValues, 0);
+			ArrayList<Integer> resposta = new ArrayList<Integer>();
+			poda(root,1,resposta);
+			Collections.sort(resposta); 
+			System.out.println(resposta.get(resposta.size()-1) + "niveis");
+			System.out.println("-----------");
+			int erros = 0;
+			for (Entry entry : testingSet) {
+				erros+=(ID3Inference.analysis(root, entry));
+			}
+			paramMedia+=(erros/testingSet.size());
+			trainingSet.clear();
+			testingSet.clear();
+
+			learningSet = FileReader.readFile("playtennis.data");
+			attributesValues = FileReader.getAttributesValues();
+			listLearningSet = ID3Utils.foldCrossValidation(learningSet);
+		}
+		System.out.println((paramMedia/10));
+
+		//e = FileReader.testTree("playtennisTest.data");
+		//System.out.println(ID3Inference.analysis(root, e));
 		System.out.println(countNodes);
 	}
 
@@ -77,7 +105,7 @@ public class PlayTennis {
 			int j = 0;
 			double max = 0.0;
 			for(int k = 0; k<gains.length; k++){
-				
+
 				gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(k), k);
 				//					if(gains[k]>=max && !ID3Utils.verifyExistence(usedAttributes, hierarchy, attributesValues.get(k))){
 
@@ -125,6 +153,15 @@ public class PlayTennis {
 			}
 		}
 		return root;
+	}
+
+	public static void poda(Node root, int i, ArrayList<Integer> resposta){
+		for (Node node : root.getNodes()) {
+			if(node.getNodes().size()==0)
+				resposta.add(i);
+			else
+				poda(node, i+1, resposta);
+		}
 	}
 }
 

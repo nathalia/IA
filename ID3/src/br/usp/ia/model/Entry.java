@@ -2,7 +2,7 @@ package br.usp.ia.model;
 
 import java.util.ArrayList;
 
-public class Entry {
+public class Entry implements Cloneable {
 	private ArrayList<ValuedAttribute> attributes;
 
 	public ArrayList<ValuedAttribute> getAttributes() {
