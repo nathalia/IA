@@ -1,0 +1,13 @@
+alt,bar,fri,hun,pat,price,rain,res,type,est,decision
+yes,no,no,yes,some,$$$,no,yes,French, 0-10,yes
+yes,no,no,yes,full,$,no,no,Thai,30-60,no
+no,yes,no,no,some,$,no,no,Burger,0-10,yes
+yes,no,yes,yes,full,$,yes,no,Thai,10-30,yes
+yes,no,yes,no,full,$$$,no,yes,French,>60,no
+no,yes,no,yes,some,$$,yes,yes,Italian,0-10,yes
+no,yes,no,no,none,$,yes,no,Burger,0-10,no
+no,no,no,yes,some,$$,yes,yes,Thai,0-10,yes
+no,yes,yes,no,full,$,yes,no,Burger,>60,no
+yes,yes,yes,yes,full,$$$,no,yes,Italian,10-30,no
+no,no,no,no,none,$,no,no,Thai,0-10,no
+yes,yes,yes,yes,full,$,no,no,Burger,30-60,yes

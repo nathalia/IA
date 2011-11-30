@@ -1,7 +1,6 @@
 package br.usp.ia.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,22 +10,23 @@ import br.usp.ia.model.Entry;
 import br.usp.ia.model.Value;
 import br.usp.ia.model.ValuedAttribute;
 
+
 public class ID3Utils {
 
-	public static double entropy(float positive, float negative){
+	public static double entropy(double positive, double negative){
 		if (positive == 0.0 || negative == 0.0){
 			return 0.0;
 		}
-		float proportion1 = positive/(positive+negative);
-		float proportion2 = negative/(positive+negative);
+		double proportion1 = positive/(positive+negative);
+		double proportion2 = negative/(positive+negative);
 		return -proportion1*(Math.log(proportion1)/Math.log(2))-proportion2*(Math.log(proportion2)/Math.log(2));
 	}
 
 	public static double gain(double rootEntropy, List<Value> entropies, int total){
 		double gain = rootEntropy;
 		double entropy;
-		float prop; 
-		float tot = total;
+		double prop; 
+		double tot = total;
 		for (Value value : entropies) {
 			entropy = entropy(value.getPositive(), value.getNegative());
 			prop = (value.getPositive()+value.getNegative())/tot;
@@ -224,5 +224,16 @@ public class ID3Utils {
 			result.add(aux);
 		return result;
 	}
+	
+	public static boolean verifyExistence(List<Attribute> usedAttributes, int hierarchy, 
+			Attribute attributeSearch){
+		for (Attribute attribute : usedAttributes) {
+			if(attribute.getName().equals(attributeSearch.getName()) && 
+					attribute.getHierarchy() == hierarchy)
+				return true;
+		}
+		return false;
+	}
+	
 }
 

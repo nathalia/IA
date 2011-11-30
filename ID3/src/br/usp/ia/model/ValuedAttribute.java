@@ -25,6 +25,4 @@ public class ValuedAttribute {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-
 }

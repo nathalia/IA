@@ -7,13 +7,13 @@ import br.usp.ia.model.Attribute;
 import br.usp.ia.model.Entry;
 import br.usp.ia.model.Node;
 import br.usp.ia.model.Value;
-import br.usp.ia.model.ValuedAttribute;
 
 public class PlayTennis {
 	static int countNodes = 0;
+	static List<Attribute> usedAttributes = new ArrayList<Attribute>();
 	public static void main(String[] args) {
 
-		ArrayList<Entry> learningSet = FileReader.readFile("playtennis.data");
+		ArrayList<Entry> learningSet = FileReader.readFile("testeLucas.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
 
 		//particionar
@@ -21,7 +21,7 @@ public class PlayTennis {
 
 		//contruir árvore com r-1 folds
 		Node root = new Node();
-		root = buildTree("",learningSet, attributesValues);			
+		root = buildTree("",learningSet, attributesValues, 0);			
 		Entry e = new Entry();
 
 
@@ -31,7 +31,8 @@ public class PlayTennis {
 	}
 
 
-	public static Node buildTree(String pre, ArrayList<Entry> learningSet, ArrayList<Attribute> attributesValues){
+	public static Node buildTree(String pre, ArrayList<Entry> learningSet, 
+			ArrayList<Attribute> attributesValues, int hierarchy){
 		Value rootValues = ID3Utils.countLabels(learningSet);
 
 		double initial = ID3Utils.entropy(rootValues.getNegative(), rootValues.getPositive());
@@ -70,20 +71,27 @@ public class PlayTennis {
 		}
 
 		else{
-			
+
 			double[] gains = new double[learningSet.get(0).getAttributes().size()-1];
 			if(attributesValues.size()==0) return null;
-			int i = 0;
 			int j = 0;
 			double max = 0.0;
-			for(int k = 0; k<gains.length-1; k++){
-				gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(i), i);
-				if(gains[k]>=max){
+			for(int k = 0; k<gains.length; k++){
+				
+				gains[k] = ID3Utils.countAttribute(initial, learningSet, attributesValues.get(k), k);
+				//					if(gains[k]>=max && !ID3Utils.verifyExistence(usedAttributes, hierarchy, attributesValues.get(k))){
+
+				if(gains[k]>max){	
 					max = gains[k];
 					j = k;
 				}
-				i++;	
 			}
+
+			Attribute use = new Attribute((attributesValues.get(j).getName()));
+			use.setPossibleValues((attributesValues.get(j).getPossibleValues()));
+			use.setHierarchy(hierarchy);
+			usedAttributes.add(use);
+
 			root.setName(attributesValues.get(j).getName());
 			ArrayList<Entry> newSet = null;
 			ArrayList<Attribute> newAttributesValues = null;
@@ -111,9 +119,9 @@ public class PlayTennis {
 				}
 				else{
 					System.out.println(pre+root.getName() + " atraves de " + root.getArestas().get(n));
-					root.getNodes().add(buildTree(pre+" ",newSet, newAttributesValues));
+					root.getNodes().add(buildTree(pre+" ",newSet, newAttributesValues, hierarchy+1));
 				}
-			n++;
+				n++;
 			}
 		}
 		return root;

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Attribute {
 	private String name;
 	private ArrayList<String> possibleValues = new ArrayList<String>();
+	private int hierarchy = -1;
+	
 	public Attribute(String name){
 		this.setName(name);
 	}
@@ -23,6 +25,12 @@ public class Attribute {
 	public void add(String possibleValue){
 		possibleValues.add(possibleValue);
 	}
+	public int getHierarchy() {
+		return hierarchy;
+	}
 
+	public void setHierarchy(int hierarchy) {
+		this.hierarchy = hierarchy;
+	}
 	
 }
