@@ -60,6 +60,10 @@ public class PlayTennis {
 		//e = FileReader.testTree("playtennisTest.data");
 		//System.out.println(ID3Inference.analysis(root, e));
 		System.out.println(countNodes);
+		
+		Node rootPoda = new Node();
+		rootPoda = buildTree("", conjuntos.get(2), attributesValues, 0);
+		
 	}
 
 
@@ -160,6 +164,7 @@ public class PlayTennis {
 	}
 
 	public static void poda(Node root, int i, ArrayList<Integer> resposta){
+		
 		for (Node node : root.getNodes()) {
 			if(node.getNodes().size()==0)
 				resposta.add(i);
