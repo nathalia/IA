@@ -226,6 +226,23 @@ public class ID3Utils {
 		return result;
 	}
 	
+	public static List<ArrayList<Entry>> conjuntos(List<Entry> entradas){
+		Collections.shuffle(entradas);
+		List<ArrayList<Entry>> result = new ArrayList<ArrayList<Entry>>();
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		result.add(new ArrayList<Entry>());
+		int index = 0;
+		for (Entry entry : entradas) {
+			if (index % 3 ==0 && index != 0){
+				index = 0;
+			}
+			result.get(index).add(entry);
+			index++;
+		}
+		return result;
+	}
+	
 	public static boolean verifyExistence(List<Attribute> usedAttributes, int hierarchy, 
 			Attribute attributeSearch){
 		for (Attribute attribute : usedAttributes) {

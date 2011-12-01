@@ -12,14 +12,18 @@ import br.usp.ia.model.Value;
 public class PlayTennis {
 	static int countNodes = 0;
 	static List<Attribute> usedAttributes = new ArrayList<Attribute>();
+	static List<ArrayList<Entry>> conjuntos;
 	public static void main(String[] args) {
 
 		ArrayList<Entry> learningSet = FileReader.readFile("playtennis.data");
+		conjuntos = ID3Utils.conjuntos(learningSet);
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();
-		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
+		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(conjuntos.get(1)); 
 		//contruir árvore com r-1 folds
 		//root = buildTree("",learningSet, attributesValues, 0);			
 		//Entry e = new Entry();
+		Node rootArvore = new Node();
+		rootArvore = buildTree("", conjuntos.get(0), attributesValues, 0);
 
 		ArrayList<Entry> trainingSet = new ArrayList<Entry>();
 		List<Entry> testingSet = new ArrayList<Entry>();
