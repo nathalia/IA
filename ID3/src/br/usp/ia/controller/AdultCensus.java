@@ -1,10 +1,11 @@
 package br.usp.ia.controller;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.usp.ia.model.Attribute;
+import br.usp.ia.model.ComparableEntry;
 import br.usp.ia.model.Entry;
 import br.usp.ia.model.Node;
 import br.usp.ia.model.Value;
@@ -14,39 +15,87 @@ public class AdultCensus {
 	static List<Attribute> usedAttributes = new ArrayList<Attribute>();
 	public static void main(String[] args) {
 
-		//		String nonMissing = FileReader.removeMissingValues("adult.data");
-		//		String nextFile;
-		//		ArrayList<ComparableEntry> initialSet = FileReader.comparableFile(nonMissing, 0);
-		//		double bestMean0 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nonMissing, 0, bestMean0);
-		//		System.out.println(1);
-		//		initialSet = FileReader.comparableFile(nonMissing, 2);
-		//		double bestMean2 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nextFile, 2, bestMean2);
-		//		System.out.println(2);
-		//		initialSet = FileReader.comparableFile(nextFile, 4);
-		//		double bestMean4 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nextFile, 4, bestMean4);
-		//		System.out.println(3);
-		//		initialSet = FileReader.comparableFile(nonMissing, 10);
-		//		double bestMean10 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nextFile, 10, bestMean10);
-		//		System.out.println(4);
-		//		initialSet = FileReader.comparableFile(nonMissing, 11);
-		//		double bestMean11 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nextFile, 11, bestMean11);
-		//		System.out.println(5);
-		//		initialSet = FileReader.comparableFile(nonMissing, 12);
-		//		double bestMean12 = ID3Utils.discretizer(initialSet);
-		//		nextFile = FileReader.discretize(nextFile, 12, bestMean12);
-		//System.out.println(6);
+//				String nonMissing = FileReader.removeMissingValues("adult.data");
+//				String nextFile;
+//				ArrayList<ComparableEntry> initialSet = FileReader.comparableFile(nonMissing, 0);
+//				double bestMean0 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean0);
+//				nextFile = FileReader.discretize(nonMissing, 0, bestMean0);
+//				System.out.println(1);
+//				initialSet = FileReader.comparableFile(nonMissing, 2);
+//				double bestMean2 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean2);
+//				nextFile = FileReader.discretize(nextFile, 2, bestMean2);
+//				System.out.println(2);
+//				initialSet = FileReader.comparableFile(nextFile, 4);
+//				double bestMean4 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean4);
+//				nextFile = FileReader.discretize(nextFile, 4, bestMean4);
+//				System.out.println(3);
+//				initialSet = FileReader.comparableFile(nonMissing, 10);
+//				double bestMean10 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean10);
+//				nextFile = FileReader.discretize(nextFile, 10, bestMean10);
+//				System.out.println(4);
+//				initialSet = FileReader.comparableFile(nonMissing, 11);
+//				double bestMean11 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean11);
+//				nextFile = FileReader.discretize(nextFile, 11, bestMean11);
+//				System.out.println(5);
+//				initialSet = FileReader.comparableFile(nonMissing, 12);
+//				double bestMean12 = ID3Utils.discretizer(initialSet);
+//				System.out.println(bestMean12);
+//				nextFile = FileReader.discretize(nextFile, 12, bestMean12);
+//		System.out.println(6);
+		
+		
 		ArrayList<Entry> learningSet = FileReader.readFile("discretized12.data");
 		ArrayList<Attribute> attributesValues = FileReader.getAttributesValues();		
-		Node root = new Node();
-		root = buildTree("",learningSet, attributesValues, 0);
-		Entry e = new Entry();
-		e = FileReader.testTree("discretized12Test.data");
-		System.out.println(ID3Inference.analysis(root, e));
+//		Node root = new Node();
+//		root = buildTree("",learningSet, attributesValues, 0);
+//		Entry e = new Entry();
+//		e = FileReader.testTree("discretized12Test.data");
+//		System.out.println(ID3Inference.analysis(root, e));
+//		System.out.println(countNodes);
+//		
+		
+		List<List<Entry>> listLearningSet = ID3Utils.foldCrossValidation(learningSet); 
+		//contruir árvore com r-1 folds
+		//root = buildTree("",learningSet, attributesValues, 0);			
+		//Entry e = new Entry();
+
+		ArrayList<Entry> trainingSet = new ArrayList<Entry>();
+		List<Entry> testingSet = new ArrayList<Entry>();
+		double paramMedia = 0;
+		for(int i = 0; i<10; i++){
+
+			for(int j = 0; j<10; j++){
+				if(j!=i)
+					trainingSet.addAll(listLearningSet.get(j));
+				else
+					testingSet = listLearningSet.get(j);
+			}
+			Node root = new Node();
+			root = buildTree("", trainingSet, attributesValues, 0);
+			ArrayList<Integer> resposta = new ArrayList<Integer>();
+			Collections.sort(resposta); 
+			System.out.println("-----------");
+			int erros = 0;
+			for (Entry entry : testingSet) {
+				erros+=(ID3Inference.analysis(root, entry));
+			}
+			paramMedia+=(erros/testingSet.size());
+			trainingSet.clear();
+			testingSet.clear();
+
+			learningSet = FileReader.readFile("discretized12.data");
+			attributesValues = FileReader.getAttributesValues();
+			listLearningSet = ID3Utils.foldCrossValidation(learningSet);
+		}
+		System.out.println((paramMedia/10));
+
+		//e = FileReader.testTree("playtennisTest.data");
+		//System.out.println(ID3Inference.analysis(root, e));
 		System.out.println(countNodes);
 
 	}

@@ -10,7 +10,7 @@ public class ID3Inference {
 
 	public static int analysis(Node root, Entry e){
 		ArrayList<ValuedAttribute> attributes = e.getAttributes();
-		if((root.getName().equalsIgnoreCase(e.getAttributes().get(e.getAttributes().size()-1).getValue())))
+		if(e.getAttributes().isEmpty() || (root.getName().equalsIgnoreCase(e.getAttributes().get(e.getAttributes().size()-1).getValue())))
 			return 0;
 		for (ValuedAttribute valuedAttribute : attributes) {
 			int i =0;
